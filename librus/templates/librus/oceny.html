@@ -1,0 +1,44 @@
+{% extends 'librus/base.html' %}
+
+{% block content %}
+    <div class="row mt-5 mb-5">
+        <form class="form-inline mx-auto">
+            <div class="form-group">
+                <select class="form-control" name="przedmiot">
+                    <option>Biologia</option>
+                    <option>Chemia</option>
+                    <option>EDB</option>
+                    <option>Fizyka</option>
+                    <option>Historia</option>
+                    <option>Informatyka</option>
+                    <option>Język angielski</option>
+                    <option>Język niemiecki</option>
+                    <option>Język francuski</option>
+                    <option>Język polski</option>
+                    <option>Matematyka</option>
+                    <option>Przedsiębiorczość</option>
+                    <option>Religia</option>
+                    <option>WOK</option>
+                    <option>WOS</option>
+                    <option>WF</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <select class="form-control ml-4" name="typ">
+                    <option>sprawdzian</option>
+                    <option>kartkówka</option>
+                    <option>odpowiedź ustana</option>
+                    <option>WSZYSTKIE</option>
+                </select>
+            </div>
+            <input type="submit" value="Wyszukaj" class="btn btn-success ml-4">
+        </form>
+    </div>
+    {% for ocena in object_list %}
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <p>{{ ocena.przedmiot }} | {{ ocena.kategoria }} | {{ ocena.ocena }} </p>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

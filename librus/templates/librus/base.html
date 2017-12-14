@@ -1,0 +1,82 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Liobrus | Wizualizacja twoich ocen{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/hover.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bttn.min.css' %}">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+</head>
+<body>
+<nav class="navbar navbar-dark navbar-expand-md bg-success justify-content-between">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-nav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse dual-nav">
+        <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+                <li class="nav-item {% if section == 'sprawdziany' %}active{% endif %}">
+                    <a class="nav-link linki hvr-underline-from-center" href="{% url 'terminarz' %}">Sprawdziany</a>
+                </li>
+                <li class="nav-item {% if section == 'praca_klasowa' %}active{% endif %}">
+                    <a class="nav-link linki hvr-underline-from-center" href="{% url 'prace-klasowe' %}">Prace
+                        klasowe</a>
+                </li>
+                <li class="nav-item {% if section == 'wiaodmosci' %}active{% endif %}">
+                    <a class="nav-link linki hvr-underline-from-center" href="{% url 'wiadomosci' %}">Wiadomości</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+    <a href="{% url 'home' %}" class="navbar-brand mr-0">Liobrus</a>
+    <div class="navbar-collapse collapse dual-nav">
+        <ul class="nav navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+                <li class="nav-item"><a class="btn btn-outline-light" href="{% url 'logout' %}">Wyloguj się</a></li>
+            {% else %}
+                <li class="nav-item"><a class="btn btn-light" href="{% url 'login' %}">Zaloguj się</a></li>i>
+                <li class="nav-item"><a class="btn btn-outline-light" href="{% url 'register' %}">Utwórz konto</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success mt-4" role="alert">
+                        <p class="text-center">{{ message }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    {% block content %}
+    {% endblock %}
+</div>
+
+
+<script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+<script>
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+    })
+</script>
+{% block chart %}
+{% endblock %}
+{% block js %}
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,146 @@
+{% extends 'librus/base.html' %}
+
+
+{% block chart %}
+    <script>
+        $(document).ready(function () {
+            var endpoint = '/api/chart/data/'
+            var defaultData = []
+            var labels = []
+            var set_max = []
+            $.ajax({
+                method: 'GET',
+                url: endpoint,
+                dataType: 'json',
+                success: function (data) {
+                    labels = data.labels
+                    defaultData = data.default
+                    set_max = data.max
+                    setChart();
+                },
+                error: function (error_data) {
+                    console.log('error')
+                    console.log(error_data)
+                }
+            })
+
+            function setChart() {
+                var ctx = document.getElementById("myChart").getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Liczba ocen',
+                            data: defaultData,
+                            backgroundColor: [
+                                'rgba(18, 18, 18, 0.5)',
+                                'rgba(244, 67, 54, 0.5)',
+                                'rgba(121, 85, 72, 0.5)',
+                                'rgba(255, 152, 0, 0.5)',
+                                'rgba(236, 64, 122, 0.5)',
+                                'rgba(2, 136, 209, 0.5)',
+                                'rgba(76, 175, 80, 0.5)',
+                            ],
+                            borderColor: [
+                                'rgba(18, 18, 18, 1)',
+                                'rgba(244, 67, 54, 1)',
+                                'rgba(121, 85, 72, 1)',
+                                'rgba(255, 152, 0, 1)',
+                                'rgba(236, 64, 122, 1)',
+                                'rgba(2, 136, 209, 1)',
+                                'rgba(76, 175, 80, 1)'
+                            ],
+                            borderWidth: 2.5
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    max: set_max
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="row mt-5">
+        <div class="col-md-6 col-lg-6 text-center">
+            <p class='data_numerka'>{{ request.user.profile.data_numerka }}</p>
+            <span class='text-center
+                    {% if user.profile.szczesliwy_numerek == None %}text-danger{% else %}numerek{% endif %}'>{% if user.profile.szczesliwy_numerek == None %}
+                <b>Zaktualizuj dane, aby zobaczyć wynik.</b>{% else %}{{ user.profile.szczesliwy_numerek }}{% endif %}</span>
+            <br>
+            <a href="{% url 'aktualizacja' %}" class="btn btn-primary mt-3 mb-5">Zaktualizuj dane</a>
+        </div>
+        <div class="col-md-6 col-lg-6 text-center">
+            {% with oceny_user=request.user.profile.oceny %}
+                <h2 class='user mb-3'>{{ request.user.profile.imie }}</h2>
+                <h5 class="klasa mt-2">{{ request.user.profile.klasa }}
+                    (nr. {{ request.user.profile.num_w_dzienniku }})</h5>
+                <a id="pokaz_oceny" href=""><p>Pokaż oceny i średnią</p></a>
+                <div class="info">
+                    <p class="oceny">Wszystkie oceny: <b>{{ oceny_user }}</b></p>
+                    <p class="srednia">Średnia wszystkich oceny: <b>{{ request.user.profile.srednia }}</b></p>
+                </div>
+                <p>Zaktualizowano: <b>{{ request.user.profile.updated }}</b></p>
+            {% endwith %}
+            <form action="." method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="bttn-unite bttn-sm bttn-primary bttn-no-outline"
+                        {% if request.user.profile.login != '' %}type="submit" {% else %} type="button"{% endif %}
+                        {% if request.user.profile.login == '' %}data-toggle="modal"
+                        data-target="#autoModal"{% endif %}>Automatyczna aktualizacja
+                </button>
+            </form>
+            <!-- Modal -->
+            <div class="modal fade" id="autoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Zaktualizuj dane</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Przed korzystaniem z korzystaniem z automatycznych aktualizacji upewnij się, że <b>zaktualizowałeś swoje
+                                dane ręcznie</b>.
+                                <a href="{% url 'aktualizacja' %}">Zaktualizuj dane.</a></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col-md-8 mx-auto mt-5">
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#pokaz_oceny').click(function (event) {
+                event.preventDefault();
+                $('.info').slideToggle()
+            })
+        });
+    </script>
+{% endblock %}

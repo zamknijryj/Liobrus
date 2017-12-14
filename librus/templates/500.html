@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Laude | Błąd</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" type="text/css" >
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 mx-auto mt-5">
+                <h1 class="text-center error500Title">Błąd</h1>
+        <p class="text-center error500Info">Wystąpił błąd podczas łączenia się z serwisem synergia.librus.pl.</p>
+        <br>
+        <p class="text-center error500Info">Najprawdopodbniej podano złe dane do logowania. <a href="{% url 'aktualizacja' %}">Prosimy ponowić próbę.</a></p>   
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+</body>
+</html>

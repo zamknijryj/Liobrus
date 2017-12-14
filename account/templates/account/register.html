@@ -1,0 +1,18 @@
+{% extends "librus/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 col-lg-6 mt-4 mx-auto">
+        <form action="." method="post">
+            <h1 class="liobrus_title text-center mt-3 mb-5">Liobrus</h1>
+            <p class="text-center mb-5 page_info">Wizualizacja twoich ocen.</p>
+            {{ user_form|crispy }}
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-block">Utwórz konto</button>
+            <p class="text-muted text-center mt-3">Masz już konto? <a class="new_info" href="{% url 'login' %}">Zaloguj się</a>.</p>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

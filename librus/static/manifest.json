@@ -1,0 +1,26 @@
+{
+  "short_name": "Liobrus",
+  "name": "Liobrus - Wizualizacja ocen",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#121212",
+  "theme_color": "#efefef",
+  "icons": [
+    {
+      "src": "48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "./?utm_source=homescreen"
+}
